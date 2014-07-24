@@ -7,4 +7,4 @@ do
   scp perdue@minervagpvm02.fnal.gov:/minerva/app/users/perdue/GENIE/runs/${filenam} ./splines
 done
 
-scp perdue@minervagpvm02.fnal.gov:/minerva/app/users/perdue/GENIE/runs/gntp.berger_sehgal.gst.root ./data
+scp perdue@minervagpvm02.fnal.gov:/minerva/app/users/perdue/GENIE/runs/gntp.berger_sehgal_4141.gst.root ./data
