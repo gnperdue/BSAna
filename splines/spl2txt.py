@@ -33,37 +33,51 @@ def get_neutrino_description(description):
         'genie::ReinSeghalCOHPiPXSec/Default/nu:-14;tgt:1000060120;
          proc:Weak[CC],COH;hmult:(p=0,n=0,pi+=0,pi-=1,pi0=0);'
     and return:
-        ReinSeghalCOHPiPXSec, -14
-    Also available:
-        tgt = components[1].split(':')[1]
-        proc = components[2].split(':')[1]
-        hadrons = components[3].split(':')[1]
+        Dictionary containing 'Algorithm', 'Flavor', 'Process',
+        'Target', and 'Hadrons'
     """
     components = description.split(';')
     alg_flavor = components[0].split('/')
     alg = alg_flavor[0].split(':')[-1]
-    flavor = alg_flavor[-1].split(':')[-1]
-    return alg, decode_flavor(flavor)
+    flavor = decode_flavor(alg_flavor[-1].split(':')[-1])
+    tgt = components[1].split(':')[1]
+    proc = components[2].split(':')[1]
+    hadrons = components[3].split(':')[1]
+    return {'Algorithm': alg,
+            'Flavor': flavor,
+            'Target': tgt,
+            'Process': proc,
+            'Hadrons': hadrons}
 
 
 def process_spline(spline):
+    """
+    Transform a spline (object) from an ElementTree retrieval
+    into a dictionary containing the relevant information.
+    """
     knots = spline.findall('./knot')
     xsecs = []
     for knot in knots:
         e = knot.find('./E')
         x = knot.find('./xsec')
         xsecs.append((e.text, x.text))
-    alg, flavor = get_neutrino_description(spline.get('name'))
-    spline_dict = {'Algorithm': alg, 'Flavor': flavor, 'Xsecs': xsecs}
-    return spline_dict
+    description = get_neutrino_description(spline.get('name'))
+    return {'Description': description, 'Xsecs': xsecs}
 
 
 def make_file(xsec_dict, xml_name):
-    flavor = xsec_dict['Flavor']
+    description = xsec_dict['Description']
+    alg = description['Algorithm']
+    flavor = description['Flavor']
+    tgt = description['Target']
+    proc = description['Process']
+    hadrons = description['Hadrons']
+    lepton = flavor.split('_')[0]
     helicity = flavor.split('_')[1]
-    filename = get_txtname(xsec_dict['Algorithm'], flavor, xml_name)
+    filename = get_txtname(description['Algorithm'], flavor, xml_name)
     with open(filename, 'w') as f:
-        f.write('#%s\n' % helicity)
+        f.write('#%s %s %s %s %s %s\n' %
+                (alg, lepton, helicity, tgt, proc, hadrons))
         f.write('Energy CrossSection\n')
         e_xs_pairs = xsec_dict['Xsecs']
         for p in e_xs_pairs:
