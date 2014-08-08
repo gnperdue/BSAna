@@ -2,7 +2,9 @@
 
 rsdev0280 <- read.table("coh_carbon_splines_RS280_nu.txt", header=TRUE, comment.char='#');
 rsdev4141 <- read.table("coh_carbon_splines_RSDEV4141_nu.txt", header=TRUE, comment.char='#');
-bsdev4141 <- read.table("coh_carbon_splines_BSDEV4141_nu.txt", header=TRUE, comment.char='#');
+bsdev4141 <- read.table("BergerSehgalCOHPiPXSecmuon_neutrinocoh_carbon_splines_BSDEV4141.txt", header=TRUE, comment.char='#');
+bsdev4160 <- read.table("BergerSehgalCOHPiPXSecmuon_neutrinocoh_carbon_splines_BSDEV4160.txt", header=TRUE, comment.char='#');
+
 
 meter <- 5.07e+15;  # 5.07e+15 / GeV
 centimeter <- 0.01 * meter;
@@ -16,7 +18,8 @@ pdf( pdftitle );
 leglabels <- c(
   "RS 280",
   "RS 4141",
-  "BS 4141"
+  "BS 4141",
+  "BS 4160"
   );
 plot(rsdev0280$Energy, (rsdev0280$CrossSection)/cm2
   ,main="Coherent Pion Neutrino"
@@ -44,7 +47,13 @@ lines(bsdev4141$Energy, (bsdev4141$CrossSection)/cm2
   ,lwd=3
   ,type="l"
   );
-legend(x=0.1,y=4e-38,legend=leglabels,fill=c("red","green","brown"),lty=c(1,3,5));
+lines(bsdev4160$Energy, (bsdev4160$CrossSection)/cm2
+  ,col="blue"
+  ,lty=6
+  ,lwd=3
+  ,type="l"
+  );
+legend(x=0.1,y=4e-38,legend=leglabels,fill=c("red","green","brown","blue"),lty=c(1,3,5,6));
 dev.off();
 
 pdftitle <- sprintf("integ_comp_all_zoom.pdf");
@@ -52,7 +61,8 @@ pdf( pdftitle );
 leglabels <- c(
   "RS 280",
   "RS 4141",
-  "BS 4141"
+  "BS 4141",
+  "BS 4160"
   );
 plot(rsdev0280$Energy, (rsdev0280$CrossSection)/cm2
   ,main="Coherent Pion Neutrino"
@@ -79,6 +89,12 @@ lines(bsdev4141$Energy, (bsdev4141$CrossSection)/cm2
   ,lwd=3
   ,type="l"
   );
-legend(x=0.7,y=2e-39,legend=leglabels,fill=c("red","green","brown"),lty=c(1,3,5));
+lines(bsdev4160$Energy, (bsdev4160$CrossSection)/cm2
+  ,col="blue"
+  ,lty=6
+  ,lwd=3
+  ,type="l"
+  );
+legend(x=0.7,y=2e-39,legend=leglabels,fill=c("red","green","brown","blue"),lty=c(1,3,5,6));
 dev.off();
 

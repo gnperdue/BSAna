@@ -1,6 +1,6 @@
 #!/bin/sh
 
-filelist='coh_carbon_splines_RS280.xml coh_carbon_splines_RSDEV4141.xml coh_carbon_splines_BSDEV4141.xml'
+filelist='coh_carbon_splines_RS280.xml coh_carbon_splines_RSDEV4141.xml coh_carbon_splines_BSDEV4141.xml coh_carbon_splines_BSDEV4160.xml'
 
 for filenam in $filelist
 do
